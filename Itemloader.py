@@ -23,6 +23,8 @@ package_with_most_empty_space = 0
 
 count_packages = 0
 
+new_unused_capacity = 0
+
 
 #Ask user for the weight of each item
 for item in range (number_of_items):
@@ -44,25 +46,31 @@ for item in range (number_of_items):
     if package_weight == 20:
         package_sent = package_sent + 1
         package_total_weight = package_total_weight + package_weight
+        new_unused_capacity = 0
+
               #this helps to understand how much weight and number of packages anytime the user adds
         print(f"Weight: {package_weight}. Number of packages: {package_sent + 1}")
         
 
 #If the weight is between 1 and 10 kg and the package is full, send the item and start a new one 
     elif package_weight > 20:
-            count_packages = count_packages + 1
-            package_total_weight = package_total_weight + package_weight - item_weight
-            package_sent = package_sent + 1
-            #Print the leftover weight
-            print("Package exceeds 20 kg. We will prepare another package. First package sent, weight amount: \n" + str(package_total_weight))
-            print(f"Leftover weight:  {item_weight}")
-            package_weight = item_weight
+        count_packages = count_packages + 1
+        package_total_weight = package_total_weight + package_weight - item_weight
+        package_sent = package_sent + 1
+        #Print the leftover weight
+        print("Package exceeds 20 kg. We will prepare another package. First package sent, weight amount: \n" + str(package_total_weight))
+        print(f"Leftover weight:  {item_weight}")
+        new_unused_capacity = 20 - package_weight
+        package_weight = item_weight
 
+    elif item == number_of_items - 1:
+        package_sent = package_sent + 1
+        package_total_weight = package_total_weight + package_weight
+        new_unused_capacity = 20 - package_weight
 
-    new_unused_capacity = int(20 - package_weight)
     if new_unused_capacity > max_unused_capacity:
         max_unused_capacity = new_unused_capacity
-    package_with_most_empty_space = package_sent
+        package_with_most_empty_space = package_sent
 
 
 #Print the number of sent packages
@@ -73,8 +81,7 @@ print(package_weight)
 if package_weight >0:
     count_packages += 1
 print(f"Sent packages:  + {count_packages} ")
-package_total_weight = package_total_weight + package_weight
-print("Sent weight: {package_total_weight}")
+print(f"Sent weight: {package_total_weight}")
 print(f"Package with most empty space:  {package_with_most_empty_space}")
 
 
